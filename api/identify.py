@@ -1,7 +1,11 @@
+from drf_yasg.utils import swagger_auto_schema
+
 from rest_framework import status, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from django.db.models import Q
+
 from identity_reconciliation.models import Contact
 
 
@@ -39,7 +43,53 @@ def format_response(primary_contact):
     }
 
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+from rest_framework import status
+
+
 class IdentifyView(APIView):
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=["email", "phoneNumber"],
+            properties={
+                "email": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    format=openapi.FORMAT_EMAIL,
+                    example="user@example.com",
+                ),
+                "phoneNumber": openapi.Schema(
+                    type=openapi.TYPE_STRING, example="+1234567890"
+                ),
+            },
+        ),
+        responses={
+            200: openapi.Response(
+                description="Successful Response",
+                examples={
+                    "application/json": {
+                        "contact": {
+                            "primaryContactId": 1,
+                            "emails": ["user@example.com"],
+                            "phoneNumbers": ["+1234567890"],
+                            "secondaryContactIds": [2, 3],
+                        }
+                    }
+                },
+            ),
+            400: openapi.Response(
+                description="Validation Error",
+                examples={
+                    "application/json": {
+                        "error": "At least one of email or phoneNumber is required."
+                    }
+                },
+            ),
+        },
+    )
     def post(self, request):
 
         # Step 1: Validate request data

@@ -1,0 +1,22 @@
+databases:
+  - name: bitespeeddb
+    plan: free
+    databaseName: bitespeeddb_6p69
+    user: bitespeeddb_6p69_user
+
+services:
+  - type: web
+    plan: free
+    name: bitespeed
+    runtime: python
+    buildCommand: './build.sh'
+    startCommand: 'python -m gunicorn bitespeed.asgi:application -k uvicorn.workers.UvicornWorker'
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: bitespeeddb
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4

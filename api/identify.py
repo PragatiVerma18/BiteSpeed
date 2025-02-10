@@ -27,7 +27,15 @@ def format_response(primary_contact):
         Q(linked_id=primary_contact) | Q(id=primary_contact.id)
     ).only("id", "email", "phone_number", "link_precedence")
 
-    emails = list(set(c.email for c in linked_contacts if c.email))
+    emails = [primary_contact.email] if primary_contact.email else []
+    emails += list(
+        set(
+            c.email
+            for c in linked_contacts
+            if c.email and c.email != primary_contact.email
+        )
+    )
+
     phone_numbers = list(set(c.phone_number for c in linked_contacts if c.phone_number))
     secondary_ids = [
         c.id for c in linked_contacts if c.link_precedence == Contact.TYPE_SECONDARY

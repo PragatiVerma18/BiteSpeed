@@ -147,8 +147,8 @@ POST /identify/
 
 #### **Swagger & ReDoc Documentation:**
 
-- Swagger UI: [/swagger/](https://bitespeed-m8on.onrender.com/swagger/)
-- ReDoc UI: [/redoc/](https://bitespeed-m8on.onrender.com/)
+- Swagger UI: [`/swagger/`](https://bitespeed-m8on.onrender.com/swagger/)
+- ReDoc UI: [`/redoc/`](https://bitespeed-m8on.onrender.com/)
 
 #### Access Admin Panel
 
